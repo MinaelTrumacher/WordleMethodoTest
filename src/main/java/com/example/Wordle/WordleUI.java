@@ -1,12 +1,15 @@
 package com.example.Wordle;
 
 import javax.swing.*;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import java.awt.*;
 
 public class WordleUI extends JFrame {
     private final WordleGame game;
     private final JTextField inputField;
-    private final JTextArea outputArea;
+    private final JTextPane outputPane;
 
     public WordleUI() {
         game = new WordleGame(WordProvider.getSecretWord());
@@ -16,7 +19,6 @@ public class WordleUI extends JFrame {
         setSize(400, 300);
         setLayout(new BorderLayout());
 
-        // Entrée utilisateur
         inputField = new JTextField();
         JButton guessButton = new JButton("Valider");
 
@@ -26,24 +28,55 @@ public class WordleUI extends JFrame {
 
         add(inputPanel, BorderLayout.NORTH);
 
-        // Zone d’affichage
-        outputArea = new JTextArea();
-        outputArea.setEditable(false);
-        outputArea.setFont(new Font("Monospaced", Font.PLAIN, 16));
-        JScrollPane scrollPane = new JScrollPane(outputArea);
-        add(scrollPane, BorderLayout.CENTER);
+        outputPane = new JTextPane();
+        outputPane.setEditable(false);
+        outputPane.setFont(new Font("Monospaced", Font.PLAIN, 16));
+        JScrollPane outputScrollPane = new JScrollPane(outputPane);
+        add(outputScrollPane, BorderLayout.CENTER);
 
-        // Action bouton
         guessButton.addActionListener(e -> processGuess());
 
-        // Entrée clavier (ENTER)
         inputField.addActionListener(e -> processGuess());
 
         setVisible(true);
     }
 
+    private void appendColoredFeedback(String guess, String feedbackStr, int remainingAttempts) {
+        StyledDocument doc = outputPane.getStyledDocument();
+
+        try {
+            doc.insertString(doc.getLength(), guess.toUpperCase() + " → ", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        for (int i = 0; i < feedbackStr.length(); i++) {
+            char c = feedbackStr.charAt(i);
+            Style style = outputPane.addStyle("colorStyle", null);
+            switch (c) {
+                case 'G' -> StyleConstants.setForeground(style, Color.GREEN);
+                case 'Y' -> StyleConstants.setForeground(style, Color.ORANGE);
+                case 'X' -> StyleConstants.setForeground(style, Color.RED);
+                default -> StyleConstants.setForeground(style, Color.BLACK);
+            }
+
+            try {
+                doc.insertString(doc.getLength(), String.valueOf(c), style);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        try {
+            doc.insertString(doc.getLength(), "   Tentative(s) restante(s) : " + remainingAttempts + "\n", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void processGuess() {
-        String guess = inputField.getText();
+        String guess = inputField.getText().trim();
+
         if (guess.length() != game.getSecretWord().length()) {
             JOptionPane.showMessageDialog(this, "Le mot doit faire " + game.getSecretWord().length() + " lettres.");
             return;
@@ -51,14 +84,16 @@ public class WordleUI extends JFrame {
 
         WordleGame.Feedback feedback = game.checkGuess(guess);
         int nbAttempt = game.getAttempts();
-        outputArea.append(guess.toUpperCase() + " → " + feedback.toString() + "\n" + "Tentative(s) restante(s): " + (6 - nbAttempt) + "\n");
+        int remaining = 6 - nbAttempt;
+
+        appendColoredFeedback(guess, feedback.toString(), remaining);
 
         inputField.setText("");
 
         if (feedback.toString().equals("GGGGG")) {
-            JOptionPane.showMessageDialog(this, "Bravo ! Mot trouvé en " + game.getAttempts() + " tentative(s) !");
+            JOptionPane.showMessageDialog(this, "Bravo ! Mot trouvé en " + nbAttempt + " tentative(s) !");
             inputField.setEnabled(false);
-        } else if (game.getAttempts() >= 6) {
+        } else if (nbAttempt >= 6) {
             JOptionPane.showMessageDialog(this, "Perdu ! Le mot était : " + game.getSecretWord());
             inputField.setEnabled(false);
         }
