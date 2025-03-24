@@ -1,13 +1,18 @@
 package com.example.Wordle;
 
 public class WordleGame {
-    private final String secretWord;
+    private String secretWord;
     private int attempts;
 
     /**
      * constructor du jeu
      */
     public WordleGame(String secretWord) {
+        this.secretWord = secretWord.toUpperCase();
+        this.attempts = 0;
+    }
+
+    public void reset(String secretWord) {
         this.secretWord = secretWord.toUpperCase();
         this.attempts = 0;
     }
@@ -56,7 +61,7 @@ public class WordleGame {
                     }
                 }
                 if (result[i] == '_') {
-                    result[i] = 'X'; // Not in word
+                    result[i] = 'X';
                 }
             }
         }

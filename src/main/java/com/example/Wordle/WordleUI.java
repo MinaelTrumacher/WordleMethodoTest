@@ -10,14 +10,24 @@ public class WordleUI extends JFrame {
     private final WordleGame game;
     private final JTextField inputField;
     private final JTextPane outputPane;
+    private final GameStats stats;
+    private JButton newGameButton;
 
     public WordleUI() {
         game = new WordleGame(WordProvider.getSecretWord());
+        stats = GameStatsStorage.load();
 
         setTitle("Wordle Java");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(400, 300);
         setLayout(new BorderLayout());
+
+        newGameButton = new JButton("Nouvelle Partie");
+        newGameButton.setEnabled(false);
+        newGameButton.addActionListener(e -> startNewGame());
+        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        bottomPanel.add(newGameButton);
+        add(bottomPanel, BorderLayout.SOUTH);
 
         inputField = new JTextField();
         JButton guessButton = new JButton("Valider");
@@ -39,6 +49,22 @@ public class WordleUI extends JFrame {
         inputField.addActionListener(e -> processGuess());
 
         setVisible(true);
+    }
+
+    private void startDifficultNewGame() {
+        game.reset(WordProvider.getDifficultWord());
+        inputField.setText("");
+        inputField.setEnabled(true);
+        outputPane.setText("");
+        newGameButton.setEnabled(false);
+    }
+
+    private void startNewGame() {
+        game.reset(WordProvider.getSecretWord());
+        inputField.setText("");
+        inputField.setEnabled(true);
+        outputPane.setText("");
+        newGameButton.setEnabled(false);
     }
 
     private void appendColoredFeedback(String guess, String feedbackStr, int remainingAttempts) {
@@ -92,10 +118,26 @@ public class WordleUI extends JFrame {
 
         if (feedback.toString().equals("GGGGG")) {
             JOptionPane.showMessageDialog(this, "Bravo ! Mot trouvé en " + nbAttempt + " tentative(s) !");
+            stats.recordWin(nbAttempt);
+            GameStatsStorage.save(stats);
+            newGameButton.setEnabled(true);
             inputField.setEnabled(false);
+            String message = String.format(
+                    "Statistiques :\nVictoires : %d\nDéfaites : %d\nMoyenne de tentatives : %.2f",
+                    stats.getNbWin(), stats.getNbLose(), stats.getAvgAttempt()
+            );
+            JOptionPane.showMessageDialog(this, message);
         } else if (nbAttempt >= 6) {
             JOptionPane.showMessageDialog(this, "Perdu ! Le mot était : " + game.getSecretWord());
+            stats.recordLose();
+            GameStatsStorage.save(stats);
+            newGameButton.setEnabled(true);
             inputField.setEnabled(false);
+            String message = String.format(
+                    "Statistiques :\nVictoires : %d\nDéfaites : %d\nMoyenne de tentatives : %.2f",
+                    stats.getNbWin(), stats.getNbLose(), stats.getAvgAttempt()
+            );
+            JOptionPane.showMessageDialog(this, message);
         }
     }
 
