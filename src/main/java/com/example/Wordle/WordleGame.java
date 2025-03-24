@@ -4,19 +4,32 @@ public class WordleGame {
     private final String secretWord;
     private int attempts;
 
+    /**
+     * constructor du jeu
+     */
     public WordleGame(String secretWord) {
         this.secretWord = secretWord.toUpperCase();
         this.attempts = 0;
     }
 
+    /**
+     * @return un mot secret
+     */
     public String getSecretWord() {
         return secretWord;
     }
 
+    /**
+     * @return le nombre de tentative
+     */
     public int getAttempts() {
         return attempts;
     }
 
+    /**
+     * String guess
+     * @return Vérification des lettres
+     */
     public Feedback checkGuess(String guess) {
         guess = guess.toUpperCase();
         attempts++;
@@ -53,16 +66,7 @@ public class WordleGame {
         return new Feedback(result);
     }
 
-    public static class Feedback {
-        private final char[] result;
-
-        public Feedback(char[] result) {
-            this.result = result;
-        }
-
-        public char[] getResult() {
-            return result;
-        }
+    public record Feedback(char[] result) {
 
         @Override
         public String toString() {

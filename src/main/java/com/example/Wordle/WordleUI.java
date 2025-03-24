@@ -1,4 +1,4 @@
-package org.example;
+package com.example.Wordle;
 
 import javax.swing.*;
 import java.awt.*;

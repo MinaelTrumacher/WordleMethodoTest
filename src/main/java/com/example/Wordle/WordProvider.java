@@ -1,4 +1,4 @@
-package org.example;
+package com.example.Wordle;
 
 import java.util.List;
 import java.util.Random;
