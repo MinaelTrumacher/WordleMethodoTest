@@ -5,11 +5,15 @@ import java.util.Random;
 
 public class WordProvider {
     private static final List<String> WORDS = List.of(
-        "APPLE", "PLANES", "MANGOS", "LEMONS", "BRAVES", "SNAKES", "HOUSES"
+        "APPLE", "PLANE", "MANGO", "LEMON", "BRAVE", "SNAKE", "HOUSE"
     );
 
     public static String getSecretWord() {
         Random rand = new Random();
         return WORDS.get(rand.nextInt(WORDS.size()));
+    }
+
+    public static boolean isValidWord(String word) {
+        return WORDS.contains(word);
     }
 }

@@ -37,7 +37,6 @@ public class WordleGame {
         char[] result = new char[guess.length()];
         boolean[] secretUsed = new boolean[guess.length()];
 
-        // First pass: good letters (green)
         for (int i = 0; i < guess.length(); i++) {
             if (guess.charAt(i) == secretWord.charAt(i)) {
                 result[i] = 'G';
@@ -47,7 +46,6 @@ public class WordleGame {
             }
         }
 
-        // Second pass: present but misplaced (yellow)
         for (int i = 0; i < guess.length(); i++) {
             if (result[i] == '_') {
                 for (int j = 0; j < secretWord.length(); j++) {
