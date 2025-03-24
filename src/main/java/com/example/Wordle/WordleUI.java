@@ -36,12 +36,7 @@ public class WordleUI extends JFrame {
         add(scrollPane, BorderLayout.CENTER);
 
         // Action bouton
-        guessButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                processGuess();
-            }
-        });
+        guessButton.addActionListener(e -> processGuess());
 
         // Entrée clavier (ENTER)
         inputField.addActionListener(e -> processGuess());
@@ -58,8 +53,7 @@ public class WordleUI extends JFrame {
 
         WordleGame.Feedback feedback = game.checkGuess(guess);
         int nbAttempt = game.getAttempts();
-        outputArea.append(guess.toUpperCase() + " → " + feedback.toString() + "\n");
-        //outputArea.append(guess.toUpperCase() + " → " + feedback.toString() + "\n" + "Tentative(s) restante(s): " + (6 - nbAttempt) + "\n");
+        outputArea.append(guess.toUpperCase() + " → " + feedback.toString() + "\n" + "Tentative(s) restante(s): " + (6 - nbAttempt) + "\n");
 
         inputField.setText("");
 

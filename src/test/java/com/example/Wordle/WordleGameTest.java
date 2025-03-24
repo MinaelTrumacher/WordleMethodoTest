@@ -1,6 +1,5 @@
-package org.example;
+package com.example.Wordle;
 
-import com.example.Wordle.WordleGame;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
