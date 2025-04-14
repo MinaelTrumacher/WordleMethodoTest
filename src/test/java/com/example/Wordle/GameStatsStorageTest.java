@@ -100,7 +100,6 @@ public class GameStatsStorageTest {
         GameStats loaded = GameStatsStorage.load();
         assertEquals(1, loaded.getNbWin());
 
-        // BONUS : on vérifie que le chargement correspond à l'objet sauvegardé
         assertTrue(loaded instanceof GameStats);
     }
 
