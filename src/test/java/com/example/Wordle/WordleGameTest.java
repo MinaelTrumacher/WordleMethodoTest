@@ -1,10 +1,9 @@
 package com.example.Wordle;
 
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 
-class WordleGameTest {
+public class WordleGameTest {
 
     @Test
     void testCorrectGuess() {
@@ -73,5 +72,25 @@ class WordleGameTest {
         String secretWord = game.getSecretWord();
 
         assertSame(secretWord, game.getSecretWord());
+    }
+
+    @Test
+    void testResetFunctionality() {
+        WordleGame game = new WordleGame("apple");
+        game.checkGuess("mango");
+        assertEquals(1, game.getAttempts());
+
+        game.reset("lemon");
+        assertEquals(0, game.getAttempts());
+        assertEquals("LEMON", game.getSecretWord());
+    }
+
+    @Test
+    void testGetWordLength() {
+        WordleGame game = new WordleGame("BANANE");
+        assertEquals(6, game.getWordLength(), "La longueur du mot devrait être 6");
+
+        WordleGame shortGame = new WordleGame("CHAT");
+        assertEquals(4, shortGame.getWordLength(), "La longueur du mot devrait être 4");
     }
 }

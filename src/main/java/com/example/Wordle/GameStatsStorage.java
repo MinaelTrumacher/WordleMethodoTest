@@ -3,7 +3,7 @@ package com.example.Wordle;
 import java.io.*;
 
 public class GameStatsStorage {
-    private static final String FILE_NAME = "GameStats.txt";
+    static String FILE_NAME = "GameStats.txt";
 
     public static void save(GameStats stats) {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(FILE_NAME))) {
@@ -20,4 +20,13 @@ public class GameStatsStorage {
             return new GameStats();
         }
     }
+
+    static void saveWithFilename(GameStats stats, String fileName) {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileName))) {
+            out.writeObject(stats);
+        } catch (IOException e) {
+            System.err.println("Erreur lors de la sauvegarde : " + e.getMessage());
+        }
+    }
+
 }

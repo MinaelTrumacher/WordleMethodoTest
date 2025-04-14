@@ -3,6 +3,7 @@ package com.example.Wordle;
 public class WordleGame {
     private String secretWord;
     private int attempts;
+    private int wordLength;
 
     /**
      * constructor du jeu
@@ -10,11 +11,13 @@ public class WordleGame {
     public WordleGame(String secretWord) {
         this.secretWord = secretWord.toUpperCase();
         this.attempts = 0;
+        this.wordLength = secretWord.length();
     }
 
     public void reset(String secretWord) {
         this.secretWord = secretWord.toUpperCase();
         this.attempts = 0;
+        this.wordLength = secretWord.length();
     }
 
     /**
@@ -31,6 +34,10 @@ public class WordleGame {
         return attempts;
     }
 
+    public int getWordLength() {
+        return wordLength;
+    }
+
     /**
      * String guess
      * @return Vérification des lettres
@@ -41,11 +48,13 @@ public class WordleGame {
 
         char[] result = new char[guess.length()];
         boolean[] secretUsed = new boolean[guess.length()];
+        int score = 0;
 
         for (int i = 0; i < guess.length(); i++) {
             if (guess.charAt(i) == secretWord.charAt(i)) {
                 result[i] = 'G';
                 secretUsed[i] = true;
+                score += 1;
             } else {
                 result[i] = '_';
             }
@@ -57,19 +66,24 @@ public class WordleGame {
                     if (!secretUsed[j] && guess.charAt(i) == secretWord.charAt(j)) {
                         result[i] = 'Y';
                         secretUsed[j] = true;
+                        score += -1;
                         break;
                     }
                 }
                 if (result[i] == '_') {
                     result[i] = 'X';
+                    score += -2;
                 }
             }
         }
 
-        return new Feedback(result);
+        int penalty = (attempts - 1) * 2;
+        int finalScore = Math.max(0, score - penalty);
+
+        return new Feedback(result, finalScore);
     }
 
-    public record Feedback(char[] result) {
+    public record Feedback(char[] result, int score) {
 
         @Override
         public String toString() {
