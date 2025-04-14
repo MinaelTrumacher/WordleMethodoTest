@@ -20,7 +20,7 @@ public class GameStatsTest {
         stats.recordLose();
 
         assertEquals(1, stats.getNbLose());
-        assertEquals(0.0, stats.getAvgAttempt()); // pas de victoire
+        assertEquals(0.0, stats.getAvgAttempt()); 
     }
 
     @Test
