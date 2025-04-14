@@ -9,7 +9,7 @@ Bienvenue dans **Wordle**, une version personnalisée du célèbre jeu de lettre
 - ✅ Interface graphique (Swing)
 - ✅ Trois modes de difficulté :
     - **Facile** : mot de 5 lettres, pas de timer
-    - **Normal** : mot de 5 à 8 lettres, timer de 30 minutes
+    - **Normal** : mot de 6 à 8 lettres, timer de 30 minutes
     - **Difficile** : mot allemand long, timer de 15 minutes
 - ✅ Feedback visuel couleur (vert, jaune, rouge)
 - ✅ Système de **score avancé** :
