@@ -1,6 +1,6 @@
 # 🎮 Wordle Java - Projet Méthodo Test
 
-Bienvenue dans **Wordle Java**, une version personnalisée du célèbre jeu de lettres, développée avec Java (Swing) dans le cadre d'un projet de méthodologie de tests.
+Bienvenue dans **Wordle**, une version personnalisée du célèbre jeu de lettres, développée avec Java (Swing) dans le cadre d'un projet de méthodologie de tests.
 
 ---
 
@@ -24,7 +24,9 @@ Bienvenue dans **Wordle Java**, une version personnalisée du célèbre jeu de l
 - ✅ Fichiers de sauvegarde automatique (`GameStats.txt`)
 - ✅ Tests unitaires complets avec JUnit 5
 - ✅ Couverture de code ≥ 90 % (via IntelliJ ou JaCoCo)
-
+- ℹ️ Les classes `GameMode` (enum), `Main`, et `WordleUI` (interface graphique Swing) n'ont pas été testées unitairement,
+  car elles contiennent peu ou pas de logique métier testable automatiquement.
+  Les tests se concentrent sur la logique de jeu, de score, et de persistance.
 ---
 
 ## 🚀 Lancer le projet
