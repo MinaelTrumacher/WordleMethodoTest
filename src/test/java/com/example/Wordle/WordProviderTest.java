@@ -31,7 +31,7 @@ public class WordProviderTest {
         assertFalse(WordProvider.isValidEasyWord("zzzzz"));
     }
 
-    @RepeatedTest(10) // pour vérifier plusieurs tirages aléatoires
+    @RepeatedTest(10) 
     void testGetEasyWord() {
         String word = WordProvider.getEasyWord();
         assertNotNull(word, "Le mot EASY ne doit pas être null");
